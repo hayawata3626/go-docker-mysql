@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   api:
     build:
@@ -11,15 +11,18 @@ services:
       - .:/app
     ports:
       - 8080:8080
+    depends_on:
+      - "db"
 
   db:
     image: mysql:8.0
+    env_file: .env
     environment:
-      MYSQL_DATABASE: sample_database
-      MYSQL_USER: sample
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_PASSWORD: password
-      TZ: 'Asia/Tokyo'
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: "Asia/Tokyo"
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - db-data:/var/lib/mysql
