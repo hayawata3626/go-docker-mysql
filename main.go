@@ -6,24 +6,19 @@ import (
 	"net/http"
 	"os"
 
+	"gin_test/model"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
 )
 
-// User ...
-type User struct {
-	gorm.Model
-	Name  string
-	Email string
-}
-
 func main() {
 	err := godotenv.Load()
 	r := gin.Default()
 	db := connectDB()
-	db.AutoMigrate(&User{})
+	db.AutoMigrate(&model.User{})
 	// user := User{Name: "sample", Email: "sample@sample.jp"}
 	// db.Create(&user)
 
@@ -40,7 +35,7 @@ func main() {
 	})
 
 	r.GET("/users", func(c *gin.Context) {
-		users := []User{}
+		users := []model.User{}
 		db.Find(&users)
 		c.JSON(http.StatusOK, users)
 	})
