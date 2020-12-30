@@ -1,6 +1,6 @@
 # go-docker-mysql
 
-## Look at .env and put `.env.example` in the root directory
+## Look at `.env.example` and put `.env` in the root directory
 
 ```
 DB=sample
