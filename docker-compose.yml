@@ -29,6 +29,8 @@ services:
       - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
     ports:
       - 3306:3306
+    security_opt:
+      - seccomp:unconfined
 
 volumes:
   db-data:
