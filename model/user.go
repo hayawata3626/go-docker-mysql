@@ -1,10 +1,15 @@
 package model
 
-import "github.com/jinzhu/gorm"
+import (
+	"time"
+)
 
 // User ...
 type User struct {
-	gorm.Model
-	Name  string
-	Email string
+	ID        uint       `gorm:"primary_key" json:"id"`
+	Name      string     `json:"name"`
+	Email     string     `json:"email"`
+	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	DeletedAt *time.Time `json:"deletedAt" sql:"index"`
 }
