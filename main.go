@@ -40,6 +40,17 @@ func main() {
 		c.JSON(http.StatusOK, users)
 	})
 
+	r.POST("/user/new", func(c *gin.Context) {
+		name := c.PostForm("name")
+		email := c.PostForm("email")
+		db.Create(&model.User{Name: name, Email: email})
+		if err != nil {
+			c.String(http.StatusBadRequest, err.Error())
+		}
+
+		c.Redirect(302, "/")
+	})
+
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
