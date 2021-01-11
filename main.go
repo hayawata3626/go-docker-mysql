@@ -45,6 +45,13 @@ func main() {
 		c.Redirect(302, "/")
 	})
 
+	r.DELETE("user/:id", func(c *gin.Context) {
+		var user model.User
+		id := c.Param("id")
+
+		db.Where("ID = ?", id).Delete(&user)
+	})
+
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
