@@ -28,12 +28,6 @@ func main() {
 
 	defer db.Close()
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "hello from go-docker-mysql-example",
-		})
-	})
-
 	r.GET("/users", func(c *gin.Context) {
 		users := []model.User{}
 		db.Find(&users)
