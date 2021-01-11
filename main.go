@@ -8,6 +8,7 @@ import (
 
 	"gin_test/model"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -17,10 +18,9 @@ import (
 func main() {
 	err := godotenv.Load()
 	r := gin.Default()
+	r.Use(cors.Default())
 	db := connectDB()
 	db.AutoMigrate(&model.User{})
-	// user := User{Name: "sample", Email: "sample@sample.jp"}
-	// db.Create(&user)
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -41,9 +41,9 @@ func main() {
 	})
 
 	r.POST("/user/new", func(c *gin.Context) {
-		name := c.PostForm("name")
-		email := c.PostForm("email")
-		db.Create(&model.User{Name: name, Email: email})
+		var req model.User
+		c.BindJSON(&req)
+		db.Create(&model.User{Name: req.Name, Email: req.Email})
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 		}
