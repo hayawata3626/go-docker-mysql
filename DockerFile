@@ -4,7 +4,9 @@ RUN mkdir /app
 WORKDIR /app
 ENV GO111MODULE=on
 
-RUN go get github.com/gin-gonic/gin && \
+RUN apt-get update && \
+	apt-get -y install vim && \
+	go get github.com/gin-gonic/gin && \
 	go get github.com/go-sql-driver/mysql && \
 	go get github.com/joho/godotenv && \
 	go get github.com/jinzhu/gorm && \
