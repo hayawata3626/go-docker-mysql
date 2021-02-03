@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
@@ -12,19 +11,23 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	err := godotenv.Load()
+	viper.SetConfigType("env")
+	viper.SetConfigFile(".env")
+	viper.AddConfigPath("../")
+	err := viper.ReadInConfig() // Find and read the config file
+	if err != nil {             // Handle errors reading the config file
+		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+	}
+
 	r := gin.Default()
 	r.Use(cors.Default())
 	db := connectDB()
 	db.AutoMigrate(&model.User{})
-
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 
 	defer db.Close()
 
@@ -56,6 +59,7 @@ func main() {
 }
 
 func connectDB() *gorm.DB {
+	fmt.Printf("%s\n", os.Getenv("DB"))
 	DBMS := os.Getenv("DB")
 	USER := os.Getenv("MYSQL_USER")
 	PASS := os.Getenv("MYSQL_PASSWORD")
